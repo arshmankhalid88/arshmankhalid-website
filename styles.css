@@ -1432,11 +1432,13 @@ section { position: relative; z-index: 2; }
 .reel-avatar {
   width: 26px; height: 26px;
   border-radius: 50%;
-  background:
-    conic-gradient(from 220deg, #f9ce34, #ee2a7b, #6228d7, #f9ce34);
-  padding: 1.5px;
-  box-shadow: inset 0 0 0 1.5px #0a0a0c;
+  padding: 2px;
   flex: 0 0 auto;
+  box-sizing: border-box;
+  background:
+    url('assets/img/avatar.png') center/cover no-repeat content-box,
+    conic-gradient(from 220deg, #f9ce34, #ee2a7b, #6228d7, #f9ce34) border-box;
+  background-origin: content-box, border-box;
 }
 .reel-handle {
   font-size: 13px;
