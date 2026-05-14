@@ -2897,3 +2897,65 @@ html[data-voice="minimal"] .pull-quote {
 /* limits subtle */
 .section-tight { padding: 120px 0; }
 
+/* ============ Mobile compatibility (phone / small tablet) ============ */
+@media (max-width: 720px) {
+  /* Decorative big-word typography: drop the min so it fits a phone column */
+  .note-bigword { font-size: clamp(44px, 14vw, 96px); }
+  .footer-stamp { font-size: clamp(54px, 18vw, 130px); }
+
+  /* Final CTA heading + section padding */
+  .cta-section { padding: 96px 0 72px; }
+  .cta-section h2 { font-size: clamp(40px, 10vw, 72px); }
+
+  /* Audience stat cards: shrink the giant numbers and inner padding */
+  .aud-grid { gap: 14px; }
+  .aud-card { padding: 22px 18px; min-height: auto; }
+  .aud-card .big { font-size: clamp(40px, 11vw, 64px); }
+
+  /* Partners wall: tighten the inner padding */
+  .partners-wall-inner { padding: 36px 22px 40px; }
+  .partners-header { margin-bottom: 32px; }
+
+  /* "What I make" cards */
+  .what-card { padding: 26px 22px 28px; min-height: auto; }
+  .what-card h3 { margin: 36px 0 12px; font-size: 30px; }
+  .what-card .arrow-up { top: 22px; right: 22px; }
+
+  /* Testimonial quote */
+  .test-card { padding: 28px 24px 26px; }
+  .test-card .quote-mark { font-size: 56px; }
+
+  /* Brands testimonial slider — further tighten on phones */
+  .brands-slider { padding: 28px 22px 24px; min-height: 360px; }
+  .brands-slide[data-active="false"] { inset: 28px 22px auto 22px; }
+
+  /* Reduce vertical breathing room so sections don't feel empty */
+  .section-pad { padding: 88px 0; }
+  .section-tight { padding: 80px 0; }
+  .test-section { padding: 88px 0; }
+  .about-section { padding: 88px 0; }
+  .steps-section { padding: 88px 0; }
+}
+
+@media (max-width: 480px) {
+  .container { padding: 0 16px; }
+
+  /* Pull big decorative type down another notch on small phones */
+  .note-bigword { font-size: clamp(40px, 13vw, 72px); }
+  .footer-stamp { font-size: clamp(48px, 17vw, 96px); }
+  .cta-section h2 { font-size: clamp(34px, 9vw, 56px); }
+
+  /* Smaller stat numbers on small phones */
+  .aud-card .big { font-size: clamp(36px, 10vw, 54px); }
+  .aud-card { padding: 20px 16px; }
+  .aud-card .label { font-size: 10px; letter-spacing: 0.14em; }
+
+  /* Tighter what-card and partners */
+  .what-card { padding: 22px 18px 24px; }
+  .what-card h3 { font-size: 26px; margin-top: 28px; }
+  .partners-wall-inner { padding: 28px 16px 32px; }
+
+  /* Buttons row: allow wrapping so they don't push the layout */
+  .about-quad-buttons, .about-buttons, .latest-bottom { flex-wrap: wrap; gap: 10px; }
+}
+
