@@ -4,6 +4,20 @@
   var viewport = document.getElementById('reelsViewport');
   if (!rail || !viewport) return;
 
+  // ---- 0. Wire video src + poster from each .reel-frame's data-attrs
+  // Run BEFORE the clone step so deep-cloned cards inherit the src/poster.
+  Array.prototype.forEach.call(rail.querySelectorAll('.reel-frame'), function(frame) {
+    var video = frame.querySelector('.reel-video');
+    if (!video) return;
+    var src = frame.getAttribute('data-video');
+    var poster = frame.getAttribute('data-poster');
+    if (src) video.setAttribute('src', src);
+    if (poster) video.setAttribute('poster', poster);
+    video.setAttribute('autoplay', '');
+    var p = video.play();
+    if (p && typeof p.catch === 'function') p.catch(function() {});
+  });
+
   // ---- 1. Duplicate the cards so the marquee can loop seamlessly
   var originals = Array.prototype.slice.call(rail.children);
   originals.forEach(function(card) {
