@@ -4,18 +4,15 @@
   var viewport = document.getElementById('reelsViewport');
   if (!rail || !viewport) return;
 
-  // ---- 0. Wire video src + poster from each .reel-frame's data-attrs
-  // Run BEFORE the clone step so deep-cloned cards inherit the src/poster.
+  // ---- 0. Set poster on each video immediately so cards aren't blank.
+  // Run BEFORE the clone step so deep-cloned cards inherit the poster.
+  // src is NOT set here — videos load lazily via IntersectionObserver
+  // (see block 1b) so a first-time visitor doesn't pay ~10MB on initial paint.
   Array.prototype.forEach.call(rail.querySelectorAll('.reel-frame'), function(frame) {
     var video = frame.querySelector('.reel-video');
     if (!video) return;
-    var src = frame.getAttribute('data-video');
     var poster = frame.getAttribute('data-poster');
-    if (src) video.setAttribute('src', src);
     if (poster) video.setAttribute('poster', poster);
-    video.setAttribute('autoplay', '');
-    var p = video.play();
-    if (p && typeof p.catch === 'function') p.catch(function() {});
   });
 
   // ---- 1. Duplicate the cards so the marquee can loop seamlessly
@@ -26,6 +23,39 @@
     clone.dataset.clone = '1';
     rail.appendChild(clone);
   });
+
+  // ---- 1b. Lazy-load each video when its card nears the viewport.
+  // rootMargin 500px gives ~1 viewport of head-start so videos are ready
+  // by the time the user actually reaches the reels section. Each card
+  // (including marquee clones) is observed independently.
+  function loadVideo(card) {
+    var frame = card.querySelector('.reel-frame');
+    var video = card.querySelector('.reel-video');
+    if (!frame || !video || video.dataset.loaded === '1') return;
+    video.dataset.loaded = '1';
+    var src = frame.getAttribute('data-video');
+    if (!src) return;
+    video.setAttribute('preload', 'auto');
+    video.setAttribute('src', src);
+    video.setAttribute('autoplay', '');
+    var p = video.play();
+    if (p && typeof p.catch === 'function') p.catch(function() {});
+  }
+  if ('IntersectionObserver' in window) {
+    var videoIO = new IntersectionObserver(function(entries) {
+      entries.forEach(function(en) {
+        if (en.isIntersecting) {
+          loadVideo(en.target);
+          videoIO.unobserve(en.target);
+        }
+      });
+    }, { rootMargin: '500px 200px 500px 200px', threshold: 0 });
+    Array.prototype.forEach.call(rail.querySelectorAll('.reel-card'), function(card) {
+      videoIO.observe(card);
+    });
+  } else {
+    Array.prototype.forEach.call(rail.querySelectorAll('.reel-card'), loadVideo);
+  }
 
   // ---- 2. Auto-scroll loop (translate the rail)
   var trackWidth = 0;
