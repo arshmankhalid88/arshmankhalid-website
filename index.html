@@ -891,87 +891,20 @@ Creator</div>
 <!-- ============ Reels rail: marquee + tilt + ticker ============ -->
 <script src="scripts/reels.js?v=3"></script>
 
-<!-- ============ Tweaks ============ -->
-<script src="assets/js/text-javascript-1.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="assets/js/text-javascript-2.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="assets/js/text-javascript-3.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-<script type="text/babel" src="assets/js/text-jsx-1.jsx"></script>
-
-<!-- Tweak defaults applied to <html> immediately, before Tweaks panel mounts -->
+<!-- Default mood / accent / voice applied to <html> so the CSS variants pick them up -->
 <script>
 (function() {
-  var TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  var TWEAK_DEFAULTS = {
     "mood": "mono",
     "accent": "#e8551a",
     "voice": "magazine"
-  }/*EDITMODE-END*/;
+  };
   var html = document.documentElement;
   html.setAttribute('data-mood', TWEAK_DEFAULTS.mood);
   html.setAttribute('data-voice', TWEAK_DEFAULTS.voice);
   html.style.setProperty('--orange', TWEAK_DEFAULTS.accent);
   html.style.setProperty('--orange-deep', TWEAK_DEFAULTS.accent);
-  window.__TWEAK_DEFAULTS__ = TWEAK_DEFAULTS;
 })();
-</script>
-
-<div id="tweaksRoot"></div>
-<script type="text/babel">
-function TweaksApp() {
-  const [t, setTweak] = useTweaks(window.__TWEAK_DEFAULTS__);
-  React.useEffect(() => {
-    const html = document.documentElement;
-    html.setAttribute('data-mood', t.mood);
-    html.setAttribute('data-voice', t.voice);
-    html.style.setProperty('--orange', t.accent);
-    html.style.setProperty('--orange-deep', t.accent);
-  }, [t.mood, t.voice, t.accent]);
-
-  const swatches = ['#e8551a', '#d23d6b', '#7a5af8', '#2b8a8a', '#6b8e23', '#0a0a0c'];
-
-  return (
-    <TweaksPanel>
-      <TweakSection label="Mood" />
-      <TweakRadio
-        label="Backdrop"
-        value={t.mood}
-        options={['warm', 'cool', 'mono']}
-        onChange={(v) => setTweak('mood', v)}
-      />
-      <TweakSection label="Accent" />
-      <div style={{ display: 'flex', gap: 8, padding: '4px 0 8px', flexWrap: 'wrap' }}>
-        {swatches.map((c) => (
-          <button
-            key={c}
-            onClick={() => setTweak('accent', c)}
-            aria-label={'Accent ' + c}
-            style={{
-              width: 26, height: 26, borderRadius: '50%',
-              background: c,
-              border: t.accent.toLowerCase() === c.toLowerCase()
-                ? '2px solid #fff' : '2px solid rgba(255,255,255,0.2)',
-              boxShadow: t.accent.toLowerCase() === c.toLowerCase()
-                ? '0 0 0 2px ' + c : 'none',
-              cursor: 'pointer', padding: 0,
-            }}
-          />
-        ))}
-      </div>
-      <TweakColor
-        label="Custom"
-        value={t.accent}
-        onChange={(v) => setTweak('accent', v)}
-      />
-      <TweakSection label="Editorial voice" />
-      <TweakRadio
-        label="Style"
-        value={t.voice}
-        options={['magazine', 'modern', 'minimal']}
-        onChange={(v) => setTweak('voice', v)}
-      />
-    </TweaksPanel>
-  );
-}
-ReactDOM.createRoot(document.getElementById('tweaksRoot')).render(<TweaksApp />);
 </script>
 
 </body></html>
